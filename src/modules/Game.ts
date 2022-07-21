@@ -24,7 +24,7 @@ export class Game {
     this.tick = this.tick.bind(this)
   }
 
-  private addPlayerProjectile(): void {
+  private addPlayerProjectile (): void {
     this.projectiles.push(new Projectile({
       x: this.player.position.x,
       y: this.player.position.y
@@ -107,8 +107,7 @@ export class Game {
       projectile.update()
 
       if (
-        projectile.position.x < 0 || projectile.position.x > this.canvas.width
-        ||
+        projectile.position.x < 0 || projectile.position.x > this.canvas.width ||
         projectile.position.y < 0 || projectile.position.y > this.canvas.height
       ) {
         this.removeProjectile(index)

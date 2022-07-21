@@ -11,7 +11,7 @@ export class Player implements IDrawable {
   private readonly HEIGHT: number = 50
   private readonly SPEED: number = 8
   private readonly OFFSET_BOTTOM: number = 20
-  private readonly COLOR_GUN: string = 'gray'
+  private readonly COLOR_BODY: string = 'gray'
   private readonly COLOR_WING: string = 'lightgray'
   private controls: TControls
   public readonly position: TCoordinates
@@ -65,31 +65,31 @@ export class Player implements IDrawable {
     ctx.moveTo(this.position.x, this.position.y + leftWingYOffset)
     ctx.lineTo(this.position.x - this.WIDTH / 2 + leftWingXOffset, this.position.y + this.HEIGHT + leftWingYOffset)
     ctx.lineTo(this.position.x, this.position.y + this.OFFSET_BOTTOM + leftWingYOffset)
-    ctx.closePath()
     ctx.fill()
+    ctx.closePath()
 
     // right wing
     ctx.beginPath()
     ctx.moveTo(this.position.x, this.position.y + rightWingYOffset)
     ctx.lineTo(this.position.x + this.WIDTH / 2 - rightWingXOffset, this.position.y + this.HEIGHT + rightWingYOffset)
     ctx.lineTo(this.position.x, this.position.y + this.OFFSET_BOTTOM + rightWingYOffset)
-    ctx.closePath()
     ctx.fill()
+    ctx.closePath()
 
-    // gun
-    const gunWidth = 16
-    const gunPeakOffset = 5
-    const gunHeightOffset = 2
+    // body
+    const bodyWidth = 16
+    const bodyPeakOffset = 5
+    const bodyHeightOffset = 2
 
-    ctx.fillStyle = this.COLOR_GUN
+    ctx.fillStyle = this.COLOR_BODY
 
     ctx.beginPath()
-    ctx.moveTo(this.position.x, this.position.y - gunPeakOffset)
-    ctx.lineTo(this.position.x + gunWidth / 2, this.position.y + gunHeightOffset)
+    ctx.moveTo(this.position.x, this.position.y - bodyPeakOffset)
+    ctx.lineTo(this.position.x + bodyWidth / 2, this.position.y + bodyHeightOffset)
     ctx.lineTo(this.position.x, this.position.y + this.HEIGHT)
-    ctx.lineTo(this.position.x - gunWidth / 2, this.position.y + gunHeightOffset)
-    ctx.closePath()
+    ctx.lineTo(this.position.x - bodyWidth / 2, this.position.y + bodyHeightOffset)
     ctx.fill()
+    ctx.closePath()
   }
 
   public update (canvas: HTMLCanvasElement): void {
