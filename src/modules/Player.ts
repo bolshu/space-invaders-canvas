@@ -1,3 +1,9 @@
+type TControlCode = 'ArrowLeft' | 'ArrowRight' | 'Space'
+
+type TControls = Record<TControlCode, {
+    passed: boolean
+}>
+
 export class Player {
   private readonly WIDTH: number = 150
   private readonly HEIGHT: number = 50
@@ -6,47 +12,46 @@ export class Player {
   private readonly COLOR_GUN: string = 'gray'
   private readonly COLOR_WING: string = 'lightgray'
   private x: number
-  private direction: 'left' | 'right' | 'forward'
+  private y: number
+  private controls: TControls
+  
 
   constructor (canvas: HTMLCanvasElement) {
     this.x = canvas.width / 2
-    this.direction = 'forward'
-  }
-
-  public moveLeft (): void {
-    if (this.x - this.WIDTH / 2 > 0) {
-      this.x -= this.SPEED
-      this.direction = 'left'
+    this.y = canvas.height - this.OFFSET_BOTTOM - this.HEIGHT
+    this.controls = {
+      ArrowLeft: {
+        passed: false
+      },
+      ArrowRight: {
+        passed: false
+      },
+      Space: {
+        passed: false
+      }
     }
   }
 
-  public moveRight (canvas: HTMLCanvasElement): void {
-    if (this.x + this.WIDTH / 2 < canvas.width) {
-      this.x += this.SPEED
-      this.direction = 'right'
-    }
+  public setControl(direction: TControlCode, value: boolean): void {
+    this.controls[direction].passed = value
   }
 
-  public stop (): void {
-    this.direction = 'forward'
-  }
-
-  public draw (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement): void {
+  public draw (ctx: CanvasRenderingContext2D): void {
     const wingXOffset = 100
     let leftWingXOffset = 0
     let rightWingXOffset = 0
 
-    const wingYOffset = 5
+    const wingYOffset = 15
     let leftWingYOffset = 0
     let rightWingYOffset = 0
 
-    if (this.direction === 'left') {
+    if (this.controls.ArrowLeft.passed) {
       leftWingXOffset = wingXOffset
       leftWingYOffset = wingYOffset
-    } else if (this.direction === 'right') {
+    } else if (this.controls.ArrowRight.passed) {
       rightWingXOffset = wingXOffset
       rightWingYOffset = wingYOffset
-    } else if (this.direction === 'forward') {
+    } else if (this.controls.Space.passed) {
       leftWingXOffset = 0
       rightWingXOffset = 0
 
@@ -58,17 +63,17 @@ export class Player {
 
     // left wing
     ctx.beginPath()
-    ctx.moveTo(this.x, canvas.height - this.OFFSET_BOTTOM - this.HEIGHT + leftWingYOffset)
-    ctx.lineTo(this.x - this.WIDTH / 2 + leftWingXOffset, canvas.height - this.OFFSET_BOTTOM + leftWingYOffset)
-    ctx.lineTo(this.x, canvas.height - this.HEIGHT + leftWingYOffset)
+    ctx.moveTo(this.x, this.y + leftWingYOffset)
+    ctx.lineTo(this.x - this.WIDTH / 2 + leftWingXOffset, this.y + this.HEIGHT + leftWingYOffset)
+    ctx.lineTo(this.x, this.y + this.OFFSET_BOTTOM + leftWingYOffset)
     ctx.closePath()
     ctx.fill()
 
     // right wing
     ctx.beginPath()
-    ctx.moveTo(this.x, canvas.height - this.OFFSET_BOTTOM - this.HEIGHT + rightWingYOffset)
-    ctx.lineTo(this.x + this.WIDTH / 2 - rightWingXOffset, canvas.height - this.OFFSET_BOTTOM + rightWingYOffset)
-    ctx.lineTo(this.x, canvas.height - this.HEIGHT + rightWingYOffset)
+    ctx.moveTo(this.x, this.y + rightWingYOffset)
+    ctx.lineTo(this.x + this.WIDTH / 2 - rightWingXOffset, this.y + this.HEIGHT + rightWingYOffset)
+    ctx.lineTo(this.x, this.y + this.OFFSET_BOTTOM + rightWingYOffset)
     ctx.closePath()
     ctx.fill()
 
@@ -80,15 +85,25 @@ export class Player {
     ctx.fillStyle = this.COLOR_GUN
 
     ctx.beginPath()
-    ctx.moveTo(this.x, canvas.height - this.OFFSET_BOTTOM - this.HEIGHT - gunPeakOffset)
-    ctx.lineTo(this.x + gunWidth / 2, canvas.height - this.OFFSET_BOTTOM - this.HEIGHT + gunHeightOffset)
-    ctx.lineTo(this.x, canvas.height - this.OFFSET_BOTTOM)
-    ctx.lineTo(this.x - gunWidth / 2, canvas.height - this.OFFSET_BOTTOM - this.HEIGHT + gunHeightOffset)
+    ctx.moveTo(this.x, this.y - gunPeakOffset)
+    ctx.lineTo(this.x + gunWidth / 2, this.y + gunHeightOffset)
+    ctx.lineTo(this.x, this.y + this.HEIGHT)
+    ctx.lineTo(this.x - gunWidth / 2, this.y + gunHeightOffset)
     ctx.closePath()
     ctx.fill()
   }
 
-  public update (): void {
-
+  public update (canvas: HTMLCanvasElement): void {
+    if (this.controls.ArrowLeft.passed) {
+      if (this.x - this.WIDTH / 2 > 0) {
+        this.x -= this.SPEED
+      }
+    } else if (this.controls.ArrowRight.passed) {
+      if (this.x + this.WIDTH / 2 < canvas.width) {
+        this.x += this.SPEED
+      }
+    } else if (this.controls.Space.passed) {
+      console.log('space passed')
+    }
   }
 }

@@ -33,11 +33,7 @@ export class Background {
     return stars
   }
 
-  public draw (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement): void {
-    ctx.fillStyle = this.COLOG_BG
-
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
-
+  public draw (ctx: CanvasRenderingContext2D): void {
     this.stars.forEach((star) => {
       ctx.fillStyle = this.COLOG_START
 

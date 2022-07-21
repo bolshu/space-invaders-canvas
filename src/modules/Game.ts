@@ -2,19 +2,13 @@ import { Canvas } from './Canvas'
 import { Player } from './Player'
 import { Background } from './Background'
 
-type TControlCode = 'ArrowLeft' | 'ArrowRight' | 'Space'
-
-type TControls = Record<TControlCode, {
-    passed: boolean
-}>
-
 export class Game {
+  private readonly COLOG_BG: string = 'black'
   private readonly canvasInstance: Canvas
   private readonly canvas: HTMLCanvasElement
   private readonly ctx: CanvasRenderingContext2D
   private readonly player: Player
   private readonly background: Background
-  private readonly controls: TControls
 
   constructor () {
     this.canvasInstance = new Canvas()
@@ -22,17 +16,6 @@ export class Game {
     this.ctx = this.canvasInstance.context
     this.player = new Player(this.canvas)
     this.background = new Background(this.canvas)
-    this.controls = {
-      ArrowLeft: {
-        passed: false
-      },
-      ArrowRight: {
-        passed: false
-      },
-      Space: {
-        passed: false
-      }
-    }
 
     this.init()
     this.tick = this.tick.bind(this)
@@ -42,15 +25,15 @@ export class Game {
     window.addEventListener('keydown', ({ code }: KeyboardEvent) => {
         switch (code) {
           case 'ArrowLeft':
-            this.controls.ArrowLeft.passed = true
+            this.player.setControl('ArrowLeft', true)
             break
   
           case 'ArrowRight':
-            this.controls.ArrowRight.passed = true
+            this.player.setControl('ArrowRight', true)
             break
   
           case 'Space':
-            this.controls.Space.passed = true
+            this.player.setControl('Space', true)
             break
   
           default:
@@ -63,15 +46,15 @@ export class Game {
     window.addEventListener('keyup', ({ code }: KeyboardEvent) => {
       switch (code) {
         case 'ArrowLeft':
-          this.controls.ArrowLeft.passed = false
+          this.player.setControl('ArrowLeft', false)
           break
 
         case 'ArrowRight':
-          this.controls.ArrowRight.passed = false
+            this.player.setControl('ArrowRight', false)
           break
 
         case 'Space':
-          this.controls.Space.passed = false
+          this.player.setControl('Space', false)
           break
 
         default:
@@ -85,27 +68,19 @@ export class Game {
     this.addKeyUpListener()
   }
 
+  private drawBG(): void {
+    this.ctx.fillStyle = this.COLOG_BG
+
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+  }
+
   private draw (): void {
-    this.background.draw(this.ctx, this.canvas)
-    this.player.draw(this.ctx, this.canvas)
+    this.drawBG()
+    this.background.draw(this.ctx)
+    this.player.draw(this.ctx)
   }
-
-  private updateControls (): void {
-    if (this.controls.ArrowLeft.passed) {
-      this.player.moveLeft()
-    } else if (this.controls.ArrowRight.passed) {
-      this.player.moveRight(this.canvas)
-    } else if (this.controls.Space.passed) {
-      console.log('space passed')
-    }
-
-    if (!this.controls.ArrowLeft.passed && !this.controls.ArrowRight.passed) {
-      this.player.stop()
-    }
-  }
-
   private update (): void {
-    this.updateControls()
+    this.player.update(this.canvas)
     this.background.update(this.canvas)
   }
 
