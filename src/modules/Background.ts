@@ -1,11 +1,12 @@
+import { IDrawable, TCoordinates } from './declaration'
+
 type TStar = {
-  x: number
-  y: number
-  r: number
-  s: number
+  position: TCoordinates
+  radius: number
+  speed: number
 }
 
-export class Background {
+export class Background implements IDrawable {
   private readonly STARS_COUNT: number = 100
   private readonly SPEED_X: number = 0.5
   private readonly SPEED_Y: number = 2
@@ -18,15 +19,17 @@ export class Background {
     this.stars = this.getStars(canvas)
   }
 
-  private getStars(canvas: HTMLCanvasElement): TStar[] {
+  private getStars (canvas: HTMLCanvasElement): TStar[] {
     const stars: TStar[] = []
 
     for (let i = 0; i < this.STARS_COUNT; i++) {
       stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.width,
-        r: Math.random(),
-        s: Math.random() + this.SPEED_MIN
+        position: {
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.width
+        },
+        radius: Math.random(),
+        speed: Math.random() + this.SPEED_MIN
       })
     }
 
@@ -38,22 +41,22 @@ export class Background {
       ctx.fillStyle = this.COLOG_START
 
       ctx.beginPath()
-      ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2)
+      ctx.arc(star.position.x, star.position.y, star.radius, 0, Math.PI * 2)
       ctx.fill()
     })
   }
 
   public update (canvas: HTMLCanvasElement): void {
     this.stars.forEach((_, index) => {
-      this.stars[index].x += this.stars[index].s * this.SPEED_X * this.stars[index].r
-      this.stars[index].y += this.stars[index].s * this.SPEED_Y * this.stars[index].r
+      this.stars[index].position.x += this.stars[index].speed * this.SPEED_X * this.stars[index].radius
+      this.stars[index].position.y += this.stars[index].speed * this.SPEED_Y * this.stars[index].radius
 
-      if (this.stars[index].x > canvas.width) {
-        this.stars[index].x = 0
+      if (this.stars[index].position.x > canvas.width) {
+        this.stars[index].position.x = 0
       }
 
-      if (this.stars[index].y > canvas.height) {
-        this.stars[index].y = 0
+      if (this.stars[index].position.y > canvas.height) {
+        this.stars[index].position.y = 0
       }
     })
   }

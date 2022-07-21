@@ -6,7 +6,7 @@ type TControls = Record<TControlCode, {
     passed: boolean
 }>
 
-export class Player implements IDrawable {
+export class Invader implements IDrawable {
   private readonly WIDTH: number = 150
   private readonly HEIGHT: number = 50
   private readonly SPEED: number = 8
