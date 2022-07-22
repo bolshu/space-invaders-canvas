@@ -7,8 +7,8 @@ type TControls = Record<TControlCode, {
 }>
 
 export class Player implements IDrawable {
-  private readonly WIDTH: number = 150
-  private readonly HEIGHT: number = 50
+  private readonly WIDTH: number = 100
+  private readonly HEIGHT: number = 40
   private readonly SPEED: number = 8
   private readonly OFFSET_BOTTOM: number = 20
   private readonly COLOR_BODY: string = 'gray'
@@ -36,11 +36,11 @@ export class Player implements IDrawable {
   }
 
   public draw (ctx: CanvasRenderingContext2D): void {
-    const wingXOffset = 100
+    const wingXOffset = (this.WIDTH / 3) * 2
     let leftWingXOffset = 0
     let rightWingXOffset = 0
 
-    const wingYOffset = 15
+    const wingYOffset = this.WIDTH / 10
     let leftWingYOffset = 0
     let rightWingYOffset = 0
 

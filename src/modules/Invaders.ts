@@ -66,16 +66,17 @@ class Invader {
 export class Invaders implements IDrawable {
   private readonly INVADER_SHAPES: TInvaderShape[] = ['circle', 'square', 'cross', 'plus']
   private readonly GAP: number = 10
-  private readonly INVADER_SIZE: number = 40
-  private readonly ROWS_MULTIPLIER: number = 0.3
-  private readonly COLS_MULTIPLIER: number = 0.6
-  private readonly VELOCITY_X: number = 0.5
+  private readonly INVADER_SIZE: number = 20
+  private readonly ROWS_MULTIPLIER: number = 0.2
+  private readonly COLS_MULTIPLIER: number = 0.5
+  private readonly VELOCITY_X: number = 1.5
   private readonly VELOCITY_Y: number = this.INVADER_SIZE / 2
+  private readonly cols: number
+  private readonly rows: number
   private position: TCoordinates
   private velocity: TCoordinates
-  private cols: number
-  private rows: number
   public inviders: Invader[] = []
+  public width: number
 
   constructor (canvas: HTMLCanvasElement) {
     this.position = {
@@ -90,11 +91,25 @@ export class Invaders implements IDrawable {
     this.rows = Math.floor(canvas.height * this.ROWS_MULTIPLIER / this.INVADER_SIZE)
 
     this.createGroup()
+
+    this.width = this.getInvadersWidth()
   }
 
   private resetPosition (): void {
     this.position.x = 0
     this.position.y = 0
+  }
+
+  private getInvadersWidth (): number {
+    return this.inviders[this.inviders.length - 1].position.x - this.inviders[0].position.x + this.INVADER_SIZE
+  }
+
+  public updateWidth (): void {
+    this.width = this.getInvadersWidth()
+  }
+
+  public updatePositionX (): void {
+    this.position.x = this.inviders[0].position.x
   }
 
   public createGroup (): void {
@@ -122,7 +137,7 @@ export class Invaders implements IDrawable {
   public update (canvas: HTMLCanvasElement): void {
     this.velocity.y = 0
 
-    if (this.position.x + this.INVADER_SIZE * this.cols + this.GAP * this.cols > canvas.width || this.position.x < 0) {
+    if (this.position.x + this.width > canvas.width || this.position.x < 0) {
       this.velocity.x = -this.velocity.x
       this.velocity.y = this.VELOCITY_Y
     }

@@ -127,12 +127,17 @@ export class Game {
     this.invaders.inviders.forEach((invader, invaderIndex) => {
       this.projectiles.forEach((projectile, projectileIndex) => {
         if (
-          (projectile.position.x + projectile.radius > invader.position.x && projectile.position.x - projectile.radius < invader.position.x + invader.size) &&
-          (projectile.position.y + projectile.radius > invader.position.y && projectile.position.y + projectile.radius < invader.position.y + invader.size)
+          (projectile.position.x > invader.position.x && projectile.position.x < invader.position.x + invader.size) &&
+          (projectile.position.y > invader.position.y && projectile.position.y < invader.position.y + invader.size)
         ) {
           setTimeout(() => {
             this.projectiles.splice(projectileIndex, 1)
             this.invaders.inviders.splice(invaderIndex, 1)
+
+            if (this.invaders.inviders.length > 0) {
+              this.invaders.updateWidth()
+              this.invaders.updatePositionX()
+            }
           })
         }
       })
