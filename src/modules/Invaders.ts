@@ -8,14 +8,14 @@ class Invader {
   private readonly COLOR_CROSS: string = 'lightgreen'
   private readonly COLOR_PLUS: string = 'tomato'
   private readonly shape: TInvaderShape
-  private readonly size: number
-  private readonly width: number
-  public position: TCoordinates
+  private readonly gridUnit: number
+  public readonly size: number
+  public readonly position: TCoordinates
 
   constructor (position: TCoordinates, size: number, shape: TInvaderShape) {
     this.shape = shape
     this.size = size
-    this.width = this.size / 3
+    this.gridUnit = this.size / 3
     this.position = position
   }
 
@@ -24,39 +24,39 @@ class Invader {
       case 'circle':
         ctx.fillStyle = this.COLOR_CIRCLE
         ctx.beginPath()
-        ctx.fillRect(this.position.x + this.width, this.position.y, this.width, this.width)
-        ctx.fillRect(this.position.x, this.position.y + this.width, this.width, this.width)
-        ctx.fillRect(this.position.x + this.width, this.position.y + this.width * 2, this.width, this.width)
-        ctx.fillRect(this.position.x + this.width * 2, this.position.y + this.width, this.width, this.width)
+        ctx.fillRect(this.position.x + this.gridUnit, this.position.y, this.gridUnit, this.gridUnit)
+        ctx.fillRect(this.position.x, this.position.y + this.gridUnit, this.gridUnit, this.gridUnit)
+        ctx.fillRect(this.position.x + this.gridUnit, this.position.y + this.gridUnit * 2, this.gridUnit, this.gridUnit)
+        ctx.fillRect(this.position.x + this.gridUnit * 2, this.position.y + this.gridUnit, this.gridUnit, this.gridUnit)
         ctx.closePath()
         break
 
       case 'square':
         ctx.fillStyle = this.COLOR_SQUARE
         ctx.beginPath()
-        ctx.fillRect(this.position.x, this.position.y, this.size, this.width)
-        ctx.fillRect(this.position.x, this.position.y + this.size - this.width, this.size, this.width)
-        ctx.fillRect(this.position.x, this.position.y, this.width, this.size)
-        ctx.fillRect(this.position.x + this.size - this.width, this.position.y, this.width, this.size)
+        ctx.fillRect(this.position.x, this.position.y, this.size, this.gridUnit)
+        ctx.fillRect(this.position.x, this.position.y + this.size - this.gridUnit, this.size, this.gridUnit)
+        ctx.fillRect(this.position.x, this.position.y, this.gridUnit, this.size)
+        ctx.fillRect(this.position.x + this.size - this.gridUnit, this.position.y, this.gridUnit, this.size)
         ctx.closePath()
         break
 
       case 'cross':
         ctx.fillStyle = this.COLOR_CROSS
         ctx.beginPath()
-        ctx.fillRect(this.position.x, this.position.y, this.width, this.width)
-        ctx.fillRect(this.position.x + this.width * 2, this.position.y, this.width, this.width)
-        ctx.fillRect(this.position.x + this.width, this.position.y + this.width, this.width, this.width)
-        ctx.fillRect(this.position.x, this.position.y + this.width * 2, this.width, this.width)
-        ctx.fillRect(this.position.x + this.width * 2, this.position.y + this.width * 2, this.width, this.width)
+        ctx.fillRect(this.position.x, this.position.y, this.gridUnit, this.gridUnit)
+        ctx.fillRect(this.position.x + this.gridUnit * 2, this.position.y, this.gridUnit, this.gridUnit)
+        ctx.fillRect(this.position.x + this.gridUnit, this.position.y + this.gridUnit, this.gridUnit, this.gridUnit)
+        ctx.fillRect(this.position.x, this.position.y + this.gridUnit * 2, this.gridUnit, this.gridUnit)
+        ctx.fillRect(this.position.x + this.gridUnit * 2, this.position.y + this.gridUnit * 2, this.gridUnit, this.gridUnit)
         ctx.closePath()
         break
 
       default:
         ctx.fillStyle = this.COLOR_PLUS
         ctx.beginPath()
-        ctx.fillRect(this.position.x + this.size / 2 - this.width / 2, this.position.y, this.width, this.size)
-        ctx.fillRect(this.position.x, this.position.y + this.size / 2 - this.width / 2, this.size, this.width)
+        ctx.fillRect(this.position.x + this.size / 2 - this.gridUnit / 2, this.position.y, this.gridUnit, this.size)
+        ctx.fillRect(this.position.x, this.position.y + this.size / 2 - this.gridUnit / 2, this.size, this.gridUnit)
         ctx.closePath()
         break
     }
