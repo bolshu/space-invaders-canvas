@@ -24,10 +24,10 @@ class Invader {
       case 'circle':
         ctx.fillStyle = this.COLOR_CIRCLE
         ctx.beginPath()
-        ctx.fillRect(this.position.x + this.width, this.position.y, this.size / 2, this.width)
-        ctx.fillRect(this.position.x + this.width, this.position.y + this.size - this.width, this.size / 2, this.width)
-        ctx.fillRect(this.position.x, this.position.y + this.width, this.width, this.size / 2)
-        ctx.fillRect(this.position.x + this.size - this.width, this.position.y + this.width, this.width, this.size / 2)
+        ctx.fillRect(this.position.x + this.width, this.position.y, this.width, this.width)
+        ctx.fillRect(this.position.x, this.position.y + this.width, this.width, this.width)
+        ctx.fillRect(this.position.x + this.width, this.position.y + this.width * 2, this.width, this.width)
+        ctx.fillRect(this.position.x + this.width * 2, this.position.y + this.width, this.width, this.width)
         ctx.closePath()
         break
 
@@ -49,7 +49,6 @@ class Invader {
         ctx.fillRect(this.position.x + this.width, this.position.y + this.width, this.width, this.width)
         ctx.fillRect(this.position.x, this.position.y + this.width * 2, this.width, this.width)
         ctx.fillRect(this.position.x + this.width * 2, this.position.y + this.width * 2, this.width, this.width)
-
         ctx.closePath()
         break
 
@@ -66,9 +65,9 @@ class Invader {
 
 export class Invaders implements IDrawable {
   private readonly INVADER_SHAPES: TInvaderShape[] = ['circle', 'square', 'cross', 'plus']
-  private readonly GAP: number = 5
+  private readonly GAP: number = 10
   private readonly SIZE: number = 40
-  private readonly ROWS_MULTIPLIER: number = 0.3
+  private readonly ROWS_MULTIPLIER: number = 0.25
   private readonly COLS_MULTIPLIER: number = 0.7
   private readonly VELOCITY_X: number = 0.5
   private readonly VELOCITY_Y: number = this.SIZE / 2
