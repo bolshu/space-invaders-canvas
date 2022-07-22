@@ -130,8 +130,10 @@ export class Game {
           (projectile.position.x + projectile.radius > invader.position.x && projectile.position.x - projectile.radius < invader.position.x + invader.size) &&
           (projectile.position.y + projectile.radius > invader.position.y && projectile.position.y + projectile.radius < invader.position.y + invader.size)
         ) {
-          this.projectiles.splice(projectileIndex, 1)
-          this.invaders.inviders.splice(invaderIndex, 1)
+          setTimeout(() => {
+            this.projectiles.splice(projectileIndex, 1)
+            this.invaders.inviders.splice(invaderIndex, 1)
+          })
         }
       })
     })
