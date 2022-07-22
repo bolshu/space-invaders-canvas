@@ -124,8 +124,8 @@ export class Game {
     this.invaders.update(this.canvas)
     this.updateProjectiles()
 
-    this.projectiles.forEach((projectile, projectileIndex) => {
-      this.invaders.inviders.forEach((invader, invaderIndex) => {
+    this.invaders.inviders.forEach((invader, invaderIndex) => {
+      this.projectiles.forEach((projectile, projectileIndex) => {
         if (
           (projectile.position.x + projectile.radius > invader.position.x && projectile.position.x - projectile.radius < invader.position.x + invader.size) &&
           (projectile.position.y + projectile.radius > invader.position.y && projectile.position.y + projectile.radius < invader.position.y + invader.size)
@@ -136,11 +136,23 @@ export class Game {
           })
         }
       })
+
+      if (invader.position.y + invader.size > this.canvas.height) {
+        this.stop()
+      }
     })
+
+    if (!this.invaders.inviders.length) {
+      this.invaders.createGroup()
+    }
   }
 
   public start (): void {
     this.canvasInstance.startAnimation(this.tick)
+  }
+
+  public stop (): void {
+    this.canvasInstance.stopAnimation()
   }
 
   private tick (): void {

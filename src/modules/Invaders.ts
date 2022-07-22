@@ -92,7 +92,14 @@ export class Invaders implements IDrawable {
     this.createGroup()
   }
 
+  private resetPosition (): void {
+    this.position.x = 0
+    this.position.y = 0
+  }
+
   public createGroup (): void {
+    this.resetPosition()
+
     for (let indexCol = 0; indexCol < this.cols; indexCol++) {
       for (let indexRow = 0; indexRow < this.rows; indexRow++) {
         const position: TCoordinates = {
