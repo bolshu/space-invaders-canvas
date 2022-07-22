@@ -3,6 +3,7 @@ import { Player } from './Player'
 import { Background } from './Background'
 import { Projectile } from './Projectile'
 import { Invaders, Invader } from './Invaders'
+import { Partical } from './Partical'
 
 export class Game {
   private readonly COLOG_PLAYER_PROJECTILE: string = 'white'
@@ -18,6 +19,7 @@ export class Game {
   private frames: number
   private projectiles: Projectile[] = []
   private invaderProjectile: Projectile[] = []
+  private particals: Partical[] = []
 
   constructor () {
     this.canvasInstance = new Canvas()
@@ -44,12 +46,22 @@ export class Game {
 
   private addInvaderProjectile (invader: Invader): void {
     this.invaderProjectile.push(new Projectile({
-      x: invader.position.x,
-      y: invader.position.y
+      x: invader.position.x + invader.size / 2,
+      y: invader.position.y + invader.size / 2
     }, {
       x: 0,
       y: this.PROJECTILE_Y_VELOCITY
     }, invader.color))
+  }
+
+  private addPartical (invader: Invader): void {
+    for (let i = 0; i < 15; i++) {
+      this.particals.push(new Partical(
+        { x: invader.position.x, y: invader.position.y },
+        { x: Math.random() - 0.5, y: Math.random() - 0.5 },
+        invader.color
+      ))
+    }
   }
 
   private removeProjectile (index: number): void {
@@ -125,6 +137,12 @@ export class Game {
     })
   }
 
+  private drawParticals (): void {
+    this.particals.forEach((partical) => {
+      partical.draw(this.ctx)
+    })
+  }
+
   private draw (): void {
     this.drawBG()
     this.background.draw(this.ctx)
@@ -132,6 +150,7 @@ export class Game {
     this.invaders.draw(this.ctx)
     this.drawProjectiles()
     this.drawInvadersProjectiles()
+    this.drawParticals()
   }
 
   private updateProjectiles (): void {
@@ -160,6 +179,18 @@ export class Game {
     })
   }
 
+  private updateParticals (): void {
+    this.particals.forEach((partical, index) => {
+      if (partical.opacity <= 0) {
+        setTimeout(() => {
+          this.particals.splice(index, 1)
+        })
+      } else {
+        partical.update()
+      }
+    })
+  }
+
   private update (): void {
     this.frames += 1
     this.player.update(this.canvas)
@@ -167,6 +198,7 @@ export class Game {
     this.invaders.update(this.canvas)
     this.updateProjectiles()
     this.updateInvadersProjectiles()
+    this.updateParticals()
 
     if (this.frames % this.INVADERS_SHOOT_SPEED === 0 && this.invaders.inviders.length) {
       this.addInvaderProjectile(
@@ -190,6 +222,8 @@ export class Game {
           (projectile.position.y > invader.position.y && projectile.position.y < invader.position.y + invader.size)
         ) {
           setTimeout(() => {
+            this.addPartical(invader)
+
             this.projectiles.splice(projectileIndex, 1)
             this.invaders.inviders.splice(invaderIndex, 1)
 
