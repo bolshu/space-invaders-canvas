@@ -2,7 +2,7 @@ import { IDrawable, TCoordinates } from './declaration'
 
 type TInvaderShape = 'circle' | 'square' | 'cross' | 'plus'
 
-class Invader {
+export class Invader {
   private readonly COLOR_CIRCLE: string = 'yellow'
   private readonly COLOR_SQUARE: string = 'aqua'
   private readonly COLOR_CROSS: string = 'lightgreen'
@@ -11,6 +11,7 @@ class Invader {
   private readonly gridUnit: number
   public readonly size: number
   public readonly position: TCoordinates
+  public color: string = ''
 
   constructor (position: TCoordinates, size: number, shape: TInvaderShape) {
     this.shape = shape
@@ -22,7 +23,8 @@ class Invader {
   public draw (ctx: CanvasRenderingContext2D): void {
     switch (this.shape) {
       case 'circle':
-        ctx.fillStyle = this.COLOR_CIRCLE
+        this.color = this.COLOR_CIRCLE
+        ctx.fillStyle = this.color
         ctx.beginPath()
         ctx.fillRect(this.position.x + this.gridUnit, this.position.y, this.gridUnit, this.gridUnit)
         ctx.fillRect(this.position.x, this.position.y + this.gridUnit, this.gridUnit, this.gridUnit)
@@ -32,7 +34,8 @@ class Invader {
         break
 
       case 'square':
-        ctx.fillStyle = this.COLOR_SQUARE
+        this.color = this.COLOR_SQUARE
+        ctx.fillStyle = this.color
         ctx.beginPath()
         ctx.fillRect(this.position.x, this.position.y, this.size, this.gridUnit)
         ctx.fillRect(this.position.x, this.position.y + this.size - this.gridUnit, this.size, this.gridUnit)
@@ -42,7 +45,8 @@ class Invader {
         break
 
       case 'cross':
-        ctx.fillStyle = this.COLOR_CROSS
+        this.color = this.COLOR_CROSS
+        ctx.fillStyle = this.color
         ctx.beginPath()
         ctx.fillRect(this.position.x, this.position.y, this.gridUnit, this.gridUnit)
         ctx.fillRect(this.position.x + this.gridUnit * 2, this.position.y, this.gridUnit, this.gridUnit)
@@ -53,7 +57,8 @@ class Invader {
         break
 
       default:
-        ctx.fillStyle = this.COLOR_PLUS
+        this.color = this.COLOR_PLUS
+        ctx.fillStyle = this.color
         ctx.beginPath()
         ctx.fillRect(this.position.x + this.size / 2 - this.gridUnit / 2, this.position.y, this.gridUnit, this.size)
         ctx.fillRect(this.position.x, this.position.y + this.size / 2 - this.gridUnit / 2, this.size, this.gridUnit)

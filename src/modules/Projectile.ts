@@ -1,23 +1,22 @@
 import { IDrawable, TCoordinates } from './declaration'
 
 export class Projectile implements IDrawable {
-  private readonly RADIUS: number = 3
-  private readonly COLOR: string = 'white'
+  private readonly color: string
   private readonly velocity: TCoordinates
+  public readonly radius: number = 3
   public readonly position: TCoordinates
-  public readonly radius: number
 
-  constructor (position: TCoordinates, velosity: TCoordinates, radius?: number) {
+  constructor (position: TCoordinates, velosity: TCoordinates, color: string) {
     this.position = position
     this.velocity = velosity
-    this.radius = radius || this.RADIUS
+    this.color = color
   }
 
   public draw (ctx: CanvasRenderingContext2D): void {
-    ctx.fillStyle = this.COLOR
+    ctx.fillStyle = this.color
 
     ctx.beginPath()
-    ctx.arc(this.position.x, this.position.y, this.RADIUS, 0, Math.PI * 2)
+    ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2)
     ctx.fill()
     ctx.closePath()
   }
