@@ -3,7 +3,7 @@ import { IDrawable, TCoordinates } from './declaration'
 export class Projectile implements IDrawable {
   private readonly RADIUS: number = 3
   private readonly COLOR: string = 'white'
-  private velocity: TCoordinates
+  private readonly velocity: TCoordinates
   public readonly position: TCoordinates
   public readonly radius: number
 

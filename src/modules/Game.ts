@@ -2,6 +2,7 @@ import { Canvas } from './Canvas'
 import { Player } from './Player'
 import { Background } from './Background'
 import { Projectile } from './Projectile'
+import { Invaders } from './Invaders'
 
 export class Game {
   private readonly COLOG_BG: string = 'black'
@@ -10,7 +11,8 @@ export class Game {
   private readonly ctx: CanvasRenderingContext2D
   private readonly player: Player
   private readonly background: Background
-  private projectiles: Projectile[]
+  private readonly invaders: Invaders
+  private projectiles: Projectile[] = []
 
   constructor () {
     this.canvasInstance = new Canvas()
@@ -18,7 +20,7 @@ export class Game {
     this.ctx = this.canvasInstance.context
     this.player = new Player(this.canvas)
     this.background = new Background(this.canvas)
-    this.projectiles = []
+    this.invaders = new Invaders(this.canvas)
 
     this.init()
     this.tick = this.tick.bind(this)
@@ -99,6 +101,7 @@ export class Game {
     this.drawBG()
     this.background.draw(this.ctx)
     this.player.draw(this.ctx)
+    this.invaders.draw(this.ctx)
     this.drawProjectiles()
   }
 
@@ -118,6 +121,7 @@ export class Game {
   private update (): void {
     this.player.update(this.canvas)
     this.background.update(this.canvas)
+    this.invaders.update(this.canvas)
     this.updateProjectiles()
   }
 
