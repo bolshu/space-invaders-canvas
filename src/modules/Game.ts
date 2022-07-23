@@ -4,8 +4,11 @@ import { Background } from './Background'
 import { Projectile } from './Projectile'
 import { Invaders, Invader } from './Invaders'
 import { Partical } from './Partical'
+import { Stats } from './Stats'
 
 export class Game {
+  private readonly SCORE_POINT_INVADER: number = 5
+  private readonly SCORE_POINT_INVADER_GROUP: number = 100
   private readonly COLOG_PLAYER_PROJECTILE: string = 'white'
   private readonly COLOG_BG: string = 'black'
   private readonly INVADERS_SHOOT_SPEED: number = 75
@@ -16,6 +19,7 @@ export class Game {
   private readonly player: Player
   private readonly background: Background
   private readonly invaders: Invaders
+  private readonly stats: Stats
   private frames: number
   private projectiles: Projectile[] = []
   private invaderProjectile: Projectile[] = []
@@ -28,6 +32,7 @@ export class Game {
     this.player = new Player(this.canvas)
     this.background = new Background(this.canvas)
     this.invaders = new Invaders(this.canvas)
+    this.stats = new Stats()
     this.frames = 0
 
     this.init()
@@ -151,6 +156,7 @@ export class Game {
     this.drawProjectiles()
     this.drawInvadersProjectiles()
     this.drawParticals()
+    this.stats.draw(this.ctx)
   }
 
   private updateProjectiles (): void {
@@ -191,8 +197,13 @@ export class Game {
     })
   }
 
-  private update (): void {
+  private updateFrames (): void {
     this.frames += 1
+  }
+
+  private update (): void {
+    this.updateFrames()
+
     this.player.update(this.canvas)
     this.background.update(this.canvas)
     this.invaders.update(this.canvas)
@@ -231,6 +242,8 @@ export class Game {
               this.invaders.updateWidth()
               this.invaders.updatePositionX()
             }
+
+            this.stats.updateScore(this.SCORE_POINT_INVADER)
           })
         }
       })
@@ -242,6 +255,7 @@ export class Game {
 
     if (!this.invaders.inviders.length) {
       this.invaders.createGroup()
+      this.stats.updateScore(this.SCORE_POINT_INVADER_GROUP)
     }
   }
 
