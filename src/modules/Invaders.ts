@@ -1,4 +1,4 @@
-import { IDrawable, TCoordinates } from './declaration'
+import { IDrawable, TCoordinates } from '../daclarations'
 
 type TInvaderShape = 'circle' | 'square' | 'cross' | 'plus'
 

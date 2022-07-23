@@ -1,4 +1,4 @@
-import { IDrawable, TCoordinates } from './declaration'
+import { IDrawable, TCoordinates } from '../daclarations'
 
 export class Projectile implements IDrawable {
   private readonly color: string
