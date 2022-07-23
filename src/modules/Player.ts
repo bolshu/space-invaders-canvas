@@ -1,4 +1,4 @@
-import { IDrawable, TCoordinates } from './declaration'
+import { IDrawable, TCoordinates } from '../declarations'
 
 type TControlCode = 'ArrowLeft' | 'ArrowRight'
 

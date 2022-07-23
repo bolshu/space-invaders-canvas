@@ -1,4 +1,4 @@
-import { IDrawable, TCoordinates } from '../daclarations'
+import { IDrawable, TCoordinates } from '../declarations'
 
 export class Partical implements IDrawable {
   private readonly OPACITY_DECREMENT: number = 0.007
